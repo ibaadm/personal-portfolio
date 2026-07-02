@@ -14,13 +14,13 @@ const links: { label: string; page: Page }[] = [
 
 export function NavBar({ currentPage, onNavigate, disabled }: NavBarProps) {
   return (
-    <nav className="flex justify-center gap-10 px-6 py-5 border-b border-border">
+    <nav className="flex justify-center gap-10 px-8 py-12 bg-surface border-b border-border">
       {links.map(({ label, page }) => (
         <button
           key={page}
           onClick={() => !disabled && onNavigate(page)}
           disabled={disabled}
-          className={`text-base transition-colors duration-150 cursor-pointer disabled:cursor-not-allowed ${
+          className={`text-lg transition-colors duration-150 cursor-pointer disabled:cursor-not-allowed ${
             currentPage === page
               ? 'text-accent'
               : 'text-muted hover:text-text'
