@@ -1,7 +1,7 @@
 export function Contact() {
   return (
-    <div className="flex flex-col justify-center items-start px-6 py-12">
-      <h1 className="text-2xl text-accent">~/contact</h1>
+    <div className="py-8">
+      <h1 className="text-4xl text-accent">Contact</h1>
     </div>
   )
 }
