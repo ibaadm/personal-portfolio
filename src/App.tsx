@@ -17,12 +17,14 @@ const entryCommands: Record<Page, string> = {
   contact: 'cd ~/contact',
 }
 
+type Phase = 'idle' | 'typing-clear' | 'typing-entry'
+
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home')
   const [entryLine, setEntryLine] = useState('')
   const [clearLine, setClearLine] = useState('')
   const [showContent, setShowContent] = useState(false)
-  const [isAnimating, setIsAnimating] = useState(false)
+  const [phase, setPhase] = useState<Phase>('idle')
   const [hasNavigated, setHasNavigated] = useState(false)
   const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([])
 
@@ -30,10 +32,9 @@ function App() {
 
   const navigateTo = useCallback(
     (page: Page) => {
-      if (isAnimating || (hasNavigated && page === currentPage)) return
+      if (phase !== 'idle' || (hasNavigated && page === currentPage)) return
       timeoutsRef.current.forEach(clearTimeout)
       timeoutsRef.current = []
-      setIsAnimating(true)
 
       function schedule(fn: () => void, delay: number) {
         const id = setTimeout(fn, delay)
@@ -43,6 +44,7 @@ function App() {
       let t = 0
 
       if (hasNavigated) {
+        setPhase('typing-clear')
         const clearCmd = 'clear'
         for (let i = 0; i <= clearCmd.length; i++) {
           const partial = clearCmd.slice(0, i)
@@ -54,8 +56,11 @@ function App() {
           setShowContent(false)
           setClearLine('')
           setEntryLine('')
+          setPhase('typing-entry')
         }, t)
         t += 100
+      } else {
+        setPhase('typing-entry')
       }
 
       const entryCmd = entryCommands[page]
@@ -69,16 +74,16 @@ function App() {
       schedule(() => {
         setCurrentPage(page)
         setShowContent(true)
-        setIsAnimating(false)
+        setPhase('idle')
         setHasNavigated(true)
       }, t)
     },
-    [isAnimating, currentPage, hasNavigated],
+    [phase, currentPage, hasNavigated],
   )
 
   return (
     <div className="flex flex-col h-full">
-      <NavBar currentPage={currentPage} onNavigate={navigateTo} disabled={isAnimating} hasNavigated={hasNavigated} />
+      <NavBar currentPage={currentPage} onNavigate={navigateTo} disabled={phase !== 'idle'} hasNavigated={hasNavigated} />
       <div className="flex-1 flex flex-col px-8 py-6 min-h-0">
         {entryLine && (
           <div className="text-text">
@@ -91,10 +96,10 @@ function App() {
             {pages[currentPage]}
           </div>
         )}
-        {(!isAnimating || clearLine || !entryLine) && (
+        {(phase !== 'typing-entry' || !entryLine) && (
           <div className="text-text">
             <span className="text-accent">$ </span>
-            {isAnimating
+            {phase === 'typing-clear'
               ? clearLine
               : <span className="cursor-blink text-accent">▋</span>
             }
