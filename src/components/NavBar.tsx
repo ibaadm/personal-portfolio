@@ -4,6 +4,7 @@ interface NavBarProps {
   currentPage: Page
   onNavigate: (page: Page) => void
   disabled: boolean
+  hasNavigated: boolean
 }
 
 const links: { label: string; page: Page }[] = [
@@ -12,7 +13,7 @@ const links: { label: string; page: Page }[] = [
   { label: '~/contact', page: 'contact' },
 ]
 
-export function NavBar({ currentPage, onNavigate, disabled }: NavBarProps) {
+export function NavBar({ currentPage, onNavigate, disabled, hasNavigated }: NavBarProps) {
   return (
     <nav className="flex justify-center gap-10 px-8 py-12 bg-surface border-b border-border">
       {links.map(({ label, page }) => (
@@ -21,7 +22,7 @@ export function NavBar({ currentPage, onNavigate, disabled }: NavBarProps) {
           onClick={() => !disabled && onNavigate(page)}
           disabled={disabled}
           className={`text-lg transition-colors duration-150 cursor-pointer disabled:cursor-not-allowed ${
-            currentPage === page
+            hasNavigated && currentPage === page
               ? 'text-accent'
               : 'text-muted hover:text-text'
           }`}
