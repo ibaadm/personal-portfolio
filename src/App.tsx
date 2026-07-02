@@ -43,25 +43,21 @@ function App() {
 
       let t = 0
 
-      if (hasNavigated) {
-        setPhase('typing-clear')
-        const clearCmd = 'clear'
-        for (let i = 0; i <= clearCmd.length; i++) {
-          const partial = clearCmd.slice(0, i)
-          schedule(() => setClearLine(partial), t)
-          t += 40
-        }
-        t += 300
-        schedule(() => {
-          setShowContent(false)
-          setClearLine('')
-          setEntryLine('')
-          setPhase('typing-entry')
-        }, t)
-        t += 100
-      } else {
-        setPhase('typing-entry')
+      setPhase('typing-clear')
+      const clearCmd = 'clear'
+      for (let i = 0; i <= clearCmd.length; i++) {
+        const partial = clearCmd.slice(0, i)
+        schedule(() => setClearLine(partial), t)
+        t += 40
       }
+      t += 300
+      schedule(() => {
+        setShowContent(false)
+        setClearLine('')
+        setEntryLine('')
+        setPhase('typing-entry')
+      }, t)
+      t += 100
 
       const entryCmd = entryCommands[page]
       for (let i = 0; i <= entryCmd.length; i++) {
@@ -85,6 +81,13 @@ function App() {
     <div className="flex flex-col h-full">
       <NavBar currentPage={currentPage} onNavigate={navigateTo} disabled={phase !== 'idle'} hasNavigated={hasNavigated} />
       <div className="flex-1 flex flex-col px-8 py-6 min-h-0">
+        {!hasNavigated && phase !== 'typing-entry' && (
+          <div className="flex flex-col gap-1 mb-4 text-text">
+            <span>ibaad-portfolio v1.0.0</span>
+            <span>Last login: {new Date().toDateString()}</span>
+            <span className="mt-2 text-muted">Select a page above to get started.</span>
+          </div>
+        )}
         {entryLine && (
           <div className="text-text">
             <span className="text-accent">$ </span>
