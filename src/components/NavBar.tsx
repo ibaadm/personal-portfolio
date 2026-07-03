@@ -8,9 +8,9 @@ interface NavBarProps {
 }
 
 const links: { label: string; page: Page }[] = [
-  { label: '~/home', page: 'home' },
-  { label: '~/projects', page: 'projects' },
-  { label: '~/contact', page: 'contact' },
+  { label: './home', page: 'home' },
+  { label: './projects', page: 'projects' },
+  { label: './contact', page: 'contact' },
 ]
 
 export function NavBar({ currentPage, onNavigate, disabled, hasNavigated }: NavBarProps) {

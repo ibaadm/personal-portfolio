@@ -12,9 +12,9 @@ const pages: Record<Page, ReactElement> = {
 }
 
 const entryCommands: Record<Page, string> = {
-  home: 'cd ~/home',
-  projects: 'cd ~/projects',
-  contact: 'cd ~/contact',
+  home: './home',
+  projects: './projects',
+  contact: './contact',
 }
 
 type Phase = 'idle' | 'typing-clear' | 'typing-entry'
@@ -90,7 +90,7 @@ function App() {
         )}
         {entryLine && (
           <div className="text-text">
-            <span className="text-accent">$ </span>
+            <span className="text-accent">ibaad@portfolio:~$ </span>
             {entryLine}
           </div>
         )}
@@ -101,7 +101,7 @@ function App() {
         )}
         {(phase !== 'typing-entry' || !entryLine) && (
           <div className="text-text">
-            <span className="text-accent">$ </span>
+            <span className="text-accent">ibaad@portfolio:~$ </span>
             {phase === 'typing-clear'
               ? clearLine
               : <span className="cursor-blink text-accent">▋</span>
