@@ -80,7 +80,7 @@ function App() {
   return (
     <div className="flex flex-col h-full">
       <NavBar currentPage={currentPage} onNavigate={navigateTo} disabled={phase !== 'idle'} hasNavigated={hasNavigated} />
-      <div className="flex-1 flex flex-col py-6 min-h-0" style={{ fontSize: '1.125rem' }}>
+      <div className="flex-1 flex flex-col min-h-0" style={{ fontSize: '1.125rem', lineHeight: '1.2', paddingTop: '1.2em', paddingBottom: '1.2em' }}>
         {!hasNavigated && phase !== 'typing-entry' && (
           <div className="flex flex-col gap-1 mb-4 text-text">
             <span>ibaad-portfolio v1.0.0</span>
@@ -95,7 +95,7 @@ function App() {
           </div>
         )}
         {showContent && (
-          <div style={{ paddingLeft: '3rem', marginTop: '1.5rem' }}>
+          <div style={{ paddingLeft: '5rem', marginTop: '1.5em' }}>
             {pages[currentPage]}
           </div>
         )}
