@@ -21,7 +21,8 @@ export function NavBar({ currentPage, onNavigate, disabled, hasNavigated }: NavB
           key={page}
           onClick={() => !disabled && onNavigate(page)}
           disabled={disabled}
-          className={`text-lg transition-colors duration-150 cursor-pointer disabled:cursor-not-allowed ${
+          style={{ fontSize: '1.25rem' }}
+          className={`transition-colors duration-150 cursor-pointer disabled:cursor-not-allowed ${
             hasNavigated && currentPage === page
               ? 'text-accent'
               : 'text-muted hover:text-text'
