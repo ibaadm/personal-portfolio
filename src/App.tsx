@@ -48,13 +48,17 @@ function App() {
   const [phase, setPhase] = useState<Phase>('idle')
   const [hasNavigated, setHasNavigated] = useState(false)
   const [outputLines, setOutputLines] = useState<string[]>([])
+  const [cvActive, setCvActive] = useState(false)
+  const [activeNavPage, setActiveNavPage] = useState<Page | null>(null)
   const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([])
 
   useEffect(() => () => timeoutsRef.current.forEach(clearTimeout), [])
 
   const navigateTo = useCallback(
     (page: Page) => {
-      if (phase !== 'idle' || (hasNavigated && page === currentPage)) return
+      if (phase !== 'idle' || (hasNavigated && page === currentPage && showContent)) return
+      setActiveNavPage(page)
+      setCvActive(false)
       timeoutsRef.current.forEach(clearTimeout)
       timeoutsRef.current = []
       const schedule = makeScheduler(timeoutsRef)
@@ -80,9 +84,10 @@ function App() {
         setShowContent(true)
         setPhase('idle')
         setHasNavigated(true)
+        setCvActive(false)
       }, t)
     },
-    [phase, currentPage, hasNavigated],
+    [phase, currentPage, hasNavigated, showContent],
   )
 
   const downloadCV = useCallback(() => {
@@ -93,6 +98,7 @@ function App() {
 
     let t = 0
 
+    setCvActive(true)
     setPhase('typing-clear')
     t = typeString('clear', schedule, setClearLine, t)
     t += 300
@@ -138,7 +144,7 @@ function App() {
 
   return (
     <div className="flex flex-col h-full">
-      <NavBar currentPage={currentPage} onNavigate={navigateTo} onDownloadCV={downloadCV} disabled={phase !== 'idle'} hasNavigated={hasNavigated} />
+      <NavBar activeNavPage={activeNavPage} onNavigate={navigateTo} onDownloadCV={downloadCV} disabled={phase !== 'idle'} cvActive={cvActive} />
       <div className="flex-1 flex flex-col min-h-0" style={{ fontSize: '1.125rem', lineHeight: '1.2', paddingTop: '1.2em', paddingBottom: '1.2em' }}>
         {!hasNavigated && phase !== 'typing-entry' && (
           <div className="flex flex-col text-text">

@@ -1,11 +1,11 @@
 import type { Page } from '../types'
 
 interface NavBarProps {
-  currentPage: Page
+  activeNavPage: Page | null
   onNavigate: (page: Page) => void
   onDownloadCV: () => void
   disabled: boolean
-  hasNavigated: boolean
+  cvActive: boolean
 }
 
 const links: { label: string; page: Page }[] = [
@@ -13,7 +13,7 @@ const links: { label: string; page: Page }[] = [
   { label: './projects', page: 'projects' },
 ]
 
-export function NavBar({ currentPage, onNavigate, onDownloadCV, disabled, hasNavigated }: NavBarProps) {
+export function NavBar({ activeNavPage, onNavigate, onDownloadCV, disabled, cvActive }: NavBarProps) {
   return (
     <nav className="flex justify-center gap-10 px-8 py-12 bg-surface border-b border-border">
       {links.map(({ label, page }) => (
@@ -23,7 +23,7 @@ export function NavBar({ currentPage, onNavigate, onDownloadCV, disabled, hasNav
           disabled={disabled}
           style={{ fontSize: '1.25rem' }}
           className={`transition-colors duration-150 cursor-pointer disabled:cursor-not-allowed ${
-            hasNavigated && currentPage === page
+            activeNavPage === page && !cvActive
               ? 'text-accent'
               : 'text-muted hover:text-text'
           }`}
@@ -35,7 +35,9 @@ export function NavBar({ currentPage, onNavigate, onDownloadCV, disabled, hasNav
         onClick={onDownloadCV}
         disabled={disabled}
         style={{ fontSize: '1.25rem' }}
-        className="text-muted hover:text-text transition-colors duration-150 cursor-pointer disabled:cursor-not-allowed"
+        className={`transition-colors duration-150 cursor-pointer disabled:cursor-not-allowed ${
+          cvActive ? 'text-accent' : 'text-muted hover:text-text'
+        }`}
       >
         ./cv↓
       </button>
