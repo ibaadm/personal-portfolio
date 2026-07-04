@@ -155,7 +155,7 @@ function App() {
           </div>
         )}
         {showContent && (
-          <div style={{ paddingLeft: '5rem', marginTop: '1.5em' }}>
+          <div style={{ paddingLeft: '5rem' }}>
             {pages[currentPage]}
           </div>
         )}

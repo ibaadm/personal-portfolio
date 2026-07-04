@@ -38,6 +38,7 @@ type Line =
 
 const lines: Line[] = [
   { type: 'blank' },
+  { type: 'blank' },
   { type: 'heading', text: "Hi there, I'm Ibaad Muhammad" },
   { type: 'blank' },
   { type: 'text', text: "I'm a first-year CS student at UCL, particularly" },
