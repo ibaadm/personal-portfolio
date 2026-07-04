@@ -57,6 +57,8 @@ const lines: Line[] = [
   { type: 'link', label: 'Email', href: 'mailto:ibaad.muhammad01@gmail.com' },
   { type: 'link', label: 'LinkedIn', href: 'https://linkedin.com/in/ibaad-muhammad' },
   { type: 'link', label: 'GitHub', href: 'https://github.com/ibaadm' },
+  { type: 'blank' },
+  { type: 'blank' },
 ]
 
 function renderLine(line: Line, index: number) {
