@@ -1,23 +1,44 @@
-import { useState, useCallback, useRef, useEffect, type ReactElement } from 'react'
+﻿import { useState, useCallback, useRef, useEffect, type ReactElement } from 'react'
 import type { Page } from './types'
 import { NavBar } from './components/NavBar'
 import { Home } from './pages/Home'
 import { Projects } from './pages/Projects'
-import { Contact } from './pages/Contact'
 
 const pages: Record<Page, ReactElement> = {
   home: <Home />,
   projects: <Projects />,
-  contact: <Contact />,
 }
 
 const entryCommands: Record<Page, string> = {
   home: './home',
   projects: './projects',
-  contact: './contact',
 }
 
 type Phase = 'idle' | 'typing-clear' | 'typing-entry'
+
+const CV_BLOCKS = 20
+
+function makeScheduler(ref: React.MutableRefObject<ReturnType<typeof setTimeout>[]>) {
+  return (fn: () => void, delay: number) => {
+    const id = setTimeout(fn, delay)
+    ref.current.push(id)
+  }
+}
+
+function typeString(
+  str: string,
+  schedule: (fn: () => void, delay: number) => void,
+  setter: (v: string) => void,
+  t: number,
+  charDelay = 40,
+): number {
+  for (let i = 0; i <= str.length; i++) {
+    const partial = str.slice(0, i)
+    schedule(() => setter(partial), t)
+    t += charDelay
+  }
+  return t
+}
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home')
@@ -26,6 +47,7 @@ function App() {
   const [showContent, setShowContent] = useState(false)
   const [phase, setPhase] = useState<Phase>('idle')
   const [hasNavigated, setHasNavigated] = useState(false)
+  const [outputLines, setOutputLines] = useState<string[]>([])
   const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([])
 
   useEffect(() => () => timeoutsRef.current.forEach(clearTimeout), [])
@@ -35,37 +57,23 @@ function App() {
       if (phase !== 'idle' || (hasNavigated && page === currentPage)) return
       timeoutsRef.current.forEach(clearTimeout)
       timeoutsRef.current = []
-
-      function schedule(fn: () => void, delay: number) {
-        const id = setTimeout(fn, delay)
-        timeoutsRef.current.push(id)
-      }
+      const schedule = makeScheduler(timeoutsRef)
 
       let t = 0
 
       setPhase('typing-clear')
-      const clearCmd = 'clear'
-      for (let i = 0; i <= clearCmd.length; i++) {
-        const partial = clearCmd.slice(0, i)
-        schedule(() => setClearLine(partial), t)
-        t += 40
-      }
+      t = typeString('clear', schedule, setClearLine, t)
       t += 300
       schedule(() => {
         setShowContent(false)
+        setOutputLines([])
         setClearLine('')
         setEntryLine('')
         setPhase('typing-entry')
       }, t)
       t += 100
 
-      const entryCmd = entryCommands[page]
-      for (let i = 0; i <= entryCmd.length; i++) {
-        const partial = entryCmd.slice(0, i)
-        schedule(() => setEntryLine(partial), t)
-        t += 40
-      }
-
+      t = typeString(entryCommands[page], schedule, setEntryLine, t)
       t += 200
       schedule(() => {
         setCurrentPage(page)
@@ -77,9 +85,60 @@ function App() {
     [phase, currentPage, hasNavigated],
   )
 
+  const downloadCV = useCallback(() => {
+    if (phase !== 'idle') return
+    timeoutsRef.current.forEach(clearTimeout)
+    timeoutsRef.current = []
+    const schedule = makeScheduler(timeoutsRef)
+
+    let t = 0
+
+    setPhase('typing-clear')
+    t = typeString('clear', schedule, setClearLine, t)
+    t += 300
+    schedule(() => {
+      setShowContent(false)
+      setOutputLines([])
+      setClearLine('')
+      setEntryLine('')
+      setPhase('typing-entry')
+    }, t)
+    t += 100
+
+    t = typeString('./cv', schedule, setEntryLine, t)
+    t += 200
+
+    schedule(() => setOutputLines(['Fetching CV_Ibaad_Muhammad.pdf...']), t)
+    t += 300
+
+    schedule(() => setOutputLines(prev => [...prev, '']), t)
+    for (let i = 1; i <= CV_BLOCKS; i++) {
+      const bar = `[${'█'.repeat(i)}${' '.repeat(CV_BLOCKS - i)}] ${Math.round((i / CV_BLOCKS) * 100)}%`
+      schedule(() => setOutputLines(prev => [...prev.slice(0, -1), bar]), t)
+      t += 25
+    }
+    t += 200
+
+    schedule(() => {
+      const link = document.createElement('a')
+      link.href = '/CV_Ibaad_Muhammad.pdf'
+      link.download = 'CV_Ibaad_Muhammad.pdf'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      setOutputLines(prev => [...prev, 'Done. Check your downloads.'])
+    }, t)
+    t += 200
+
+    schedule(() => {
+      setPhase('idle')
+      setHasNavigated(true)
+    }, t)
+  }, [phase])
+
   return (
     <div className="flex flex-col h-full">
-      <NavBar currentPage={currentPage} onNavigate={navigateTo} disabled={phase !== 'idle'} hasNavigated={hasNavigated} />
+      <NavBar currentPage={currentPage} onNavigate={navigateTo} onDownloadCV={downloadCV} disabled={phase !== 'idle'} hasNavigated={hasNavigated} />
       <div className="flex-1 flex flex-col min-h-0" style={{ fontSize: '1.125rem', lineHeight: '1.2', paddingTop: '1.2em', paddingBottom: '1.2em' }}>
         {!hasNavigated && phase !== 'typing-entry' && (
           <div className="flex flex-col text-text">
@@ -98,6 +157,13 @@ function App() {
         {showContent && (
           <div style={{ paddingLeft: '5rem', marginTop: '1.5em' }}>
             {pages[currentPage]}
+          </div>
+        )}
+        {outputLines.length > 0 && (
+          <div>
+            {outputLines.map((line, i) => (
+              <div key={i} className="text-text">{line}</div>
+            ))}
           </div>
         )}
         {(phase !== 'typing-entry' || !entryLine) && (
