@@ -95,7 +95,7 @@ export function Projects() {
                 }
                 {project.extraLinks && (
                   <>
-                    <span className="text-muted"> - </span>
+                    <span className="text-text"> - </span>
                     {project.extraLinks.map(({ label, href }, j) => (
                       <span key={label}>
                         {j > 0 && <span className="text-muted"> | </span>}

@@ -151,7 +151,7 @@ function App() {
             <span>ibaad-portfolio {__APP_VERSION__}</span>
             <span>Last login: {new Date().toDateString()}</span>
             <span>&nbsp;</span>
-            <span className="text-muted">Select a page above to get started.</span>
+            <span>Select a page above to get started.</span>
           </div>
         )}
         {entryLine && (
