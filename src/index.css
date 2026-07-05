@@ -58,7 +58,7 @@ body {
   }
 
   .ascii-art {
-    font-size: 0.75rem !important;
+    font-size: min(calc((100vw - 1rem) / (var(--ascii-max-width) * 0.6)), 1.125rem) !important;
     margin-top: 1em !important;
     padding-right: 0 !important;
     width: fit-content !important;

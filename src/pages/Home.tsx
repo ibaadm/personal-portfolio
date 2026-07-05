@@ -119,7 +119,10 @@ export function Home() {
       </div>
       {revealedAscii >= 1 && (
         <>
-          <pre className="text-accent ascii-art" style={{ width: `calc(${maxAsciiWidth}ch + 5rem)` }}>
+          <pre
+            className="text-accent ascii-art"
+            style={{ '--ascii-max-width': maxAsciiWidth, width: `calc(${maxAsciiWidth}ch + 5rem)` } as React.CSSProperties}
+          >
             {asciiLines.slice(0, revealedAscii).join('\n')}
           </pre>
           <div className="md:hidden"><br /><br /></div>
