@@ -148,7 +148,7 @@ function App() {
       <div className="flex-1 flex flex-col min-h-0" style={{ fontSize: '1.125rem', lineHeight: '1.2', paddingTop: '1.2em', paddingBottom: '1.2em' }}>
         {!hasNavigated && phase !== 'typing-entry' && (
           <div className="flex flex-col text-text">
-            <span>ibaad-portfolio v1.0.0</span>
+            <span>ibaad-portfolio {__APP_VERSION__}</span>
             <span>Last login: {new Date().toDateString()}</span>
             <span>&nbsp;</span>
             <span className="text-muted">Select a page above to get started.</span>
