@@ -77,6 +77,7 @@ function renderLine(line: Line, index: number) {
 }
 
 const asciiLines = asciiArt.split('\n')
+const maxAsciiWidth = Math.max(...asciiLines.map(l => l.length))
 
 export function Home() {
   const [revealedLines, setRevealedLines] = useState(0)
@@ -95,7 +96,7 @@ export function Home() {
         {lines.slice(0, revealedLines).map(renderLine)}
       </div>
       {revealedLines >= 1 && (
-        <pre className="text-accent" style={{ fontSize: 'inherit', lineHeight: '1.2', marginTop: '-1.2em', paddingRight: '5rem' }}>
+        <pre className="text-accent" style={{ fontSize: 'inherit', lineHeight: '1.2', marginTop: '-1.2em', paddingRight: '5rem', width: `calc(${maxAsciiWidth}ch + 5rem)` }}>
           {asciiLines.slice(0, revealedLines).join('\n')}
         </pre>
       )}
