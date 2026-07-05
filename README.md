@@ -1,7 +1,6 @@
-# ibaadmuhammad.com
+# Personal Portfolio Website
 
-Personal portfolio built as a retro amber terminal. No templates — designed and built from scratch.
-
+Built as a retro amber terminal where navigation plays out as shell commands. All sequencing is done with `setTimeout` Designed and built from scratch.  
 Live at [ibaadmuhammad.com](https://ibaadmuhammad.com)
 
 ## Stack
@@ -9,10 +8,6 @@ Live at [ibaadmuhammad.com](https://ibaadmuhammad.com)
 - Vite + React + TypeScript
 - Tailwind CSS v4
 - JetBrains Mono
-
-## Design
-
-Amber monochrome terminal aesthetic. The whole page is the terminal — navigation plays out as shell commands, content reveals line by line. No animation libraries; all sequencing is done with `setTimeout`.
 
 ## Running locally
 
