@@ -59,19 +59,37 @@ const lines: Line[] = [
   { type: 'link', label: 'GitHub', href: 'https://github.com/ibaadm' },
 ]
 
-function renderLine(line: Line, index: number) {
-  switch (line.type) {
-    case 'blank': return <br key={index} />
-    case 'heading': return <h1 key={index} className="text-accent">{line.text}</h1>
-    case 'text': return <p key={index} className="text-text">{line.text}</p>
-    case 'link': return (
-      <div key={index}>
-        <a key={index} href={line.href} target="_blank" rel="noopener noreferrer" className="text-accent hover:underline w-fit">
-          {line.label}
-        </a>
-      </div>
-    )
+function renderLines(revealed: Line[]) {
+  const result: React.ReactNode[] = []
+  let i = 0
+  while (i < revealed.length) {
+    const line = revealed[i]
+    if (line.type === 'blank') {
+      result.push(<br key={i} />)
+      i++
+    } else if (line.type === 'heading') {
+      result.push(<h1 key={i} className="text-accent">{line.text}</h1>)
+      i++
+    } else if (line.type === 'link') {
+      result.push(
+        <div key={i}>
+          <a href={line.href} target="_blank" rel="noopener noreferrer" className="text-accent hover:underline w-fit">
+            {line.label}
+          </a>
+        </div>
+      )
+      i++
+    } else {
+      const start = i
+      const texts: string[] = []
+      while (i < revealed.length && revealed[i].type === 'text') {
+        texts.push((revealed[i] as Extract<Line, { type: 'text' }>).text)
+        i++
+      }
+      result.push(<p key={start} className="text-text">{texts.join(' ')}</p>)
+    }
   }
+  return result
 }
 
 const asciiLines = asciiArt.split('\n')
@@ -97,7 +115,7 @@ export function Home() {
   return (
     <div className="flex flex-col md:flex-row justify-between gap-2 items-start w-full">
       <div style={{ maxWidth: '50ch' }}>
-        {lines.slice(0, revealedLines).map(renderLine)}
+        {renderLines(lines.slice(0, revealedLines))}
       </div>
       {revealedAscii >= 1 && (
         <>
