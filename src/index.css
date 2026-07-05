@@ -40,3 +40,29 @@ body {
 .cursor-blink {
   animation: blink 1s step-end infinite;
 }
+
+.content-indent {
+  padding-left: 5rem;
+}
+
+.ascii-art {
+  font-size: inherit;
+  line-height: 1.2;
+  margin-top: -1.2em;
+  padding-right: 5rem;
+}
+
+@media (max-width: 767px) {
+  .content-indent {
+    padding-left: 0.5rem;
+  }
+
+  .ascii-art {
+    font-size: 0.8rem !important;
+    margin-top: 1em !important;
+    padding-right: 0 !important;
+    width: fit-content !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}

@@ -145,7 +145,7 @@ function App() {
   return (
     <div className="flex flex-col h-full">
       <NavBar activeNavPage={activeNavPage} onNavigate={navigateTo} onDownloadCV={downloadCV} disabled={phase !== 'idle'} cvActive={cvActive} />
-      <div className="flex-1 flex flex-col min-h-0" style={{ fontSize: '1.125rem', lineHeight: '1.2', paddingTop: '1.2em', paddingBottom: '1.2em' }}>
+      <div className="flex-1 flex flex-col min-h-0 overflow-y-auto" style={{ fontSize: '1.125rem', lineHeight: '1.2', paddingTop: '1.2em', paddingBottom: '1.2em' }}>
         {!hasNavigated && phase !== 'typing-entry' && (
           <div className="flex flex-col text-text">
             <span>ibaad-portfolio {__APP_VERSION__}</span>
@@ -161,7 +161,7 @@ function App() {
           </div>
         )}
         {showContent && (
-          <div style={{ paddingLeft: '5rem' }}>
+          <div className="content-indent">
             {pages[currentPage]}
           </div>
         )}

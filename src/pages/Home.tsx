@@ -57,8 +57,6 @@ const lines: Line[] = [
   { type: 'link', label: 'Email', href: 'mailto:ibaad.muhammad01@gmail.com' },
   { type: 'link', label: 'LinkedIn', href: 'https://linkedin.com/in/ibaad-muhammad' },
   { type: 'link', label: 'GitHub', href: 'https://github.com/ibaadm' },
-  { type: 'blank' },
-  { type: 'blank' },
 ]
 
 function renderLine(line: Line, index: number) {
@@ -81,24 +79,33 @@ const maxAsciiWidth = Math.max(...asciiLines.map(l => l.length))
 
 export function Home() {
   const [revealedLines, setRevealedLines] = useState(0)
+  const [revealedAscii, setRevealedAscii] = useState(0)
 
   useEffect(() => {
-    const total = Math.max(lines.length, asciiLines.length)
-    const ids = Array.from({ length: total }, (_, i) =>
+    const isMobile = window.matchMedia('(max-width: 767px)').matches
+    const asciiDelay = isMobile ? lines.length * 30 : 0
+
+    const textIds = Array.from({ length: lines.length }, (_, i) =>
       setTimeout(() => setRevealedLines(i + 1), i * 30)
     )
-    return () => ids.forEach(clearTimeout)
+    const asciiIds = Array.from({ length: asciiLines.length }, (_, i) =>
+      setTimeout(() => setRevealedAscii(i + 1), asciiDelay + i * 30)
+    )
+    return () => [...textIds, ...asciiIds].forEach(clearTimeout)
   }, [])
 
   return (
-    <div className="flex justify-between gap-2 items-start w-full">
-      <div style={{ width: '50ch' }}>
+    <div className="flex flex-col md:flex-row justify-between gap-2 items-start w-full">
+      <div style={{ maxWidth: '50ch' }}>
         {lines.slice(0, revealedLines).map(renderLine)}
       </div>
-      {revealedLines >= 1 && (
-        <pre className="text-accent" style={{ fontSize: 'inherit', lineHeight: '1.2', marginTop: '-1.2em', paddingRight: '5rem', width: `calc(${maxAsciiWidth}ch + 5rem)` }}>
-          {asciiLines.slice(0, revealedLines).join('\n')}
-        </pre>
+      {revealedAscii >= 1 && (
+        <>
+          <pre className="text-accent ascii-art" style={{ width: `calc(${maxAsciiWidth}ch + 5rem)` }}>
+            {asciiLines.slice(0, revealedAscii).join('\n')}
+          </pre>
+          <div className="md:hidden"><br /><br /></div>
+        </>
       )}
     </div>
   )

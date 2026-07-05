@@ -15,7 +15,7 @@ const links: { label: string; page: Page }[] = [
 
 export function NavBar({ activeNavPage, onNavigate, onDownloadCV, disabled, cvActive }: NavBarProps) {
   return (
-    <nav className="flex justify-center gap-10 px-8 py-12 bg-surface border-b border-border">
+    <nav className="shrink-0 flex justify-center gap-6 md:gap-10 px-4 md:px-8 py-6 md:py-12 bg-surface border-b border-border">
       {links.map(({ label, page }) => (
         <button
           key={page}
