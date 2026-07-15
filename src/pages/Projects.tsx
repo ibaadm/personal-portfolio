@@ -40,7 +40,7 @@ const projects: Project[] = [
     description: 'ESP32 firmware and Node-RED dashboard for closed-loop bioreactor control via MQTT',
     stack: 'C++ + JavaScript + Node-RED + MQTT',
     extraLinks: [
-      { label: 'Dashboard', href: 'https://github.com/ibaadm/Bioreator-Dashboard' },
+      { label: 'Dashboard', href: 'https://github.com/ibaadm/Bioreactor-Dashboard' },
       { label: 'Firmware', href: 'https://github.com/ibaadm/Bioreactor-Firmware' },
     ],
   },
