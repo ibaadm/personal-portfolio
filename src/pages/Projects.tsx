@@ -33,6 +33,9 @@ const projects: Project[] = [
     description: 'Full-stack habit recommendation web app aiming to defeat decision fatigue',
     stack: 'Flask + React + SQLite',
     github: 'https://github.com/jeony18/Scenario-2-Habits-Web-App',
+    extraLinks: [
+      { label: 'Visit', href: 'https://habitly-app.onrender.com' },
+    ],
   },
   {
     index: '4',
