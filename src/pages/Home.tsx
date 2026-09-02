@@ -48,7 +48,7 @@ const lines: Line[] = [
   { type: 'text', text: "I've built things across many domains, from" },
   { type: 'text', text: "games and web apps to machine learning and" },
   { type: 'text', text: "embedded systems. I care about writing" },
-  { type: 'text', text: "efficient and readable code, rather than" },
+  { type: 'text', text: "efficient and readable code rather than" },
   { type: 'text', text: "just getting it to work. In my free time," },
   { type: 'text', text: "I enjoy travelling, reading and training" },
   { type: 'text', text: "MMA. I'm currently working on an e-commerce" },
