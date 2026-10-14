@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 
 type Project = {
-  index: string
   name: string
   description: string
   stack: string
@@ -11,7 +10,6 @@ type Project = {
 
 const projects: Project[] = [
   {
-    index: '1',
     name: 'Typocalypse',
     description: 'A 2D cross-platform multiplayer arcade game where you type to escape zombies',
     stack: 'Unity + C#',
@@ -21,14 +19,12 @@ const projects: Project[] = [
     ],
   },
   {
-    index: '2',
     name: 'Rolls-Royce Novel Fission & CO₂ Reduction',
     description: 'Simulation models for High Temperature Gas Reactor thermodynamics and power cycle analysis',
     stack: 'Python (pandas, NumPy, SciPy, Matplotlib, iapws)',
     github: 'https://github.com/ibaadm/HTGR-Simulator',
   },
   {
-    index: '3',
     name: 'Habitly',
     description: 'Full-stack habit recommendation web app aiming to defeat decision fatigue',
     stack: 'Flask + React + SQLite',
@@ -38,7 +34,6 @@ const projects: Project[] = [
     ],
   },
   {
-    index: '4',
     name: 'Bioreactor IoT Control System',
     description: 'ESP32 firmware and Node-RED dashboard for closed-loop bioreactor control via MQTT',
     stack: 'C++ + JavaScript + Node-RED + MQTT',
@@ -48,13 +43,11 @@ const projects: Project[] = [
     ],
   },
   {
-    index: '5',
     name: 'Real-Time Sign Language Detector',
     description: 'TensorFlow Object Detection model classifying real-time sign gestures via webcam, trained on a custom labelled dataset',
     stack: 'Python + TensorFlow + OpenCV',
   },
   {
-    index: '6',
     name: 'This Portfolio',
     description: 'The terminal portfolio you\'re currently using to read this',
     stack: 'Vite + React + TypeScript',
@@ -88,10 +81,10 @@ export function Projects() {
         const descLine = stackLine + 1
         if (revealedLines < titleLine) return null
         return (
-          <div key={project.index} style={{ marginTop: '1.2em' }}>
+          <div key={project.name} style={{ marginTop: '1.2em' }}>
             {revealedLines >= titleLine && (
               <p className="text-accent">
-                [{project.index}]{' '}
+                [{i + 1}]{' '}
                 {project.github
                   ? <a href={project.github} target="_blank" rel="noopener noreferrer" className="hover:underline">{project.name}</a>
                   : project.name
