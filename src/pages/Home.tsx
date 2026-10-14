@@ -36,28 +36,45 @@ type Line =
   | { type: 'text'; text: string }
   | { type: 'link'; label: string; href: string }
 
-const lines: Line[] = [
+type Block = Exclude<Line, { type: 'text' }> | { type: 'paragraph'; text: string }
+
+const LINE_WIDTH = 50
+
+const content: Block[] = [
   { type: 'blank' },
   { type: 'blank' },
   { type: 'heading', text: "Hi there, I'm Ibaad Muhammad" },
   { type: 'blank' },
-  { type: 'text', text: "I'm a first-year CS student at UCL, particularly" },
-  { type: 'text', text: "interested in software engineering and AI." },
+  { type: 'paragraph', text: "I'm a first-year CS student at UCL, particularly interested in software engineering and AI." },
   { type: 'blank' },
   { type: 'blank' },
-  { type: 'text', text: "I've built things across many domains, from" },
-  { type: 'text', text: "games and web apps to machine learning and" },
-  { type: 'text', text: "embedded systems. I care about writing" },
-  { type: 'text', text: "efficient and readable code rather than" },
-  { type: 'text', text: "just getting it to work. In my free time," },
-  { type: 'text', text: "I enjoy travelling, reading and training" },
-  { type: 'text', text: "MMA. I'm currently working on an e-commerce" },
-  { type: 'text', text: "web app. Feel free to reach out; links below!" },
+  { type: 'paragraph', text: "I've built things across many domains, from games and web apps to machine learning and embedded systems. I care about writing efficient and readable code rather than just getting it to work. In my free time, I enjoy travelling, reading and training MMA. I'm currently working on an e-commerce web app. Feel free to reach out; links below!" },
   { type: 'blank' },
   { type: 'link', label: 'Email', href: 'mailto:ibaad.muhammad01@gmail.com' },
   { type: 'link', label: 'LinkedIn', href: 'https://linkedin.com/in/ibaad-muhammad' },
   { type: 'link', label: 'GitHub', href: 'https://github.com/ibaadm' },
 ]
+
+function wrapText(text: string, width: number): string[] {
+  const wrapped: string[] = []
+  let current = ''
+  for (const word of text.split(' ')) {
+    if (current && current.length + 1 + word.length > width) {
+      wrapped.push(current)
+      current = word
+    } else {
+      current = current ? `${current} ${word}` : word
+    }
+  }
+  if (current) wrapped.push(current)
+  return wrapped
+}
+
+const lines: Line[] = content.flatMap((block): Line[] =>
+  block.type === 'paragraph'
+    ? wrapText(block.text, LINE_WIDTH).map(text => ({ type: 'text', text }))
+    : [block]
+)
 
 function renderLines(revealed: Line[]) {
   const result: React.ReactNode[] = []
@@ -114,7 +131,7 @@ export function Home() {
 
   return (
     <div className="flex flex-col md:flex-row justify-between gap-2 items-start w-full">
-      <div style={{ maxWidth: '50ch' }}>
+      <div style={{ maxWidth: `${LINE_WIDTH}ch` }}>
         {renderLines(lines.slice(0, revealedLines))}
       </div>
       {revealedAscii >= 1 && (
