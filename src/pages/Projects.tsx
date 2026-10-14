@@ -43,11 +43,6 @@ const projects: Project[] = [
     ],
   },
   {
-    name: 'Real-Time Sign Language Detector',
-    description: 'TensorFlow Object Detection model classifying real-time sign gestures via webcam, trained on a custom labelled dataset',
-    stack: 'Python + TensorFlow + OpenCV',
-  },
-  {
     name: 'This Portfolio',
     description: 'The terminal portfolio you\'re currently using to read this',
     stack: 'Vite + React + TypeScript',
