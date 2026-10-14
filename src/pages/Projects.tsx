@@ -101,7 +101,7 @@ export function Projects() {
                     <span className="text-text"> - </span>
                     {project.extraLinks.map(({ label, href }, j) => (
                       <span key={label}>
-                        {j > 0 && <span className="text-muted"> | </span>}
+                        {j > 0 && <span className="text-text"> | </span>}
                         <a href={href} target="_blank" rel="noopener noreferrer" className="hover:underline">{label}</a>
                       </span>
                     ))}
