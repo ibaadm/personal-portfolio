@@ -21,7 +21,7 @@ const projects: Project[] = [
   {
     name: 'Rolls-Royce Novel Fission & CO₂ Reduction',
     description: 'Simulation models for High Temperature Gas Reactor thermodynamics and power cycle analysis',
-    stack: 'Python (pandas, NumPy, SciPy, Matplotlib, iapws)',
+    stack: 'Python (pandas, NumPy, pytest, Matplotlib, iapws, Flake8)',
     github: 'https://github.com/ibaadm/HTGR-Simulator',
   },
   {
